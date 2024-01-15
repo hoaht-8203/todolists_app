@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
-import IconPlus from './Icon/IconPlus';
+import { Todo } from '../@types/todo.type';
 import IconEnter from './Icon/IconEnter';
 
 interface TaskInputProps {
   addTodo: (name: string) => void;
+  currentTodo: Todo | null;
+  editTodo: (newName: string) => void;
+  updateTodo: (newTodo: Todo) => void;
 }
 
 const TaskInput = (props: TaskInputProps) => {
-  const { addTodo } = props;
+  const { addTodo, currentTodo, editTodo, updateTodo } = props;
   const [value, setValue] = useState<string>('');
 
-  const handleChangeValue = (event: any) => {
-    setValue(event.target.value);
+  const handleChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (currentTodo) editTodo(value);
+    else setValue(value);
   };
 
-  const handleSubmitTask = (event: any) => {
+  const handleSubmitTask = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (currentTodo) {
+      updateTodo(currentTodo);
+
+      editTodo('');
+    }
+
     if (value) {
       addTodo(value);
       setValue('');
@@ -29,7 +41,7 @@ const TaskInput = (props: TaskInputProps) => {
           className="w-full rounded-lg border px-3 py-2 shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
           type="text"
           placeholder="Enter work..."
-          value={value}
+          value={currentTodo ? currentTodo.name : value}
           onChange={handleChangeValue}
         />
         <button className="rounded-lg border px-3 shadow">

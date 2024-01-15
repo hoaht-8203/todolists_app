@@ -3,10 +3,13 @@ import TaskItem from './TaskItem';
 
 interface TaskListProps {
   taskList: Todo[];
+  handleDoneTodo: (id: string, isDone: boolean) => void;
+  handleDeleteTodo: (id: string) => void;
+  startEditTodo: (id: string) => void;
 }
 
 const TaskList = (props: TaskListProps) => {
-  const { taskList } = props;
+  const { taskList, handleDoneTodo, handleDeleteTodo, startEditTodo } = props;
   const taskListNotDone = taskList.filter((task) => {
     return !task.done;
   });
@@ -20,7 +23,15 @@ const TaskList = (props: TaskListProps) => {
       <ul className="flex flex-col gap-2">
         {taskListNotDone.length > 0
           ? taskListNotDone.map((task) => {
-              return <TaskItem task={task} key={task.id} />;
+              return (
+                <TaskItem
+                  handleDeleteTodo={handleDeleteTodo}
+                  task={task}
+                  key={task.id}
+                  handleDoneTodo={handleDoneTodo}
+                  startEditTodo={startEditTodo}
+                />
+              );
             })
           : 'Chưa có công việc nào!'}
       </ul>
@@ -29,7 +40,15 @@ const TaskList = (props: TaskListProps) => {
       <ul className="flex flex-col gap-2">
         {taskListDone.length > 0
           ? taskListDone.map((task) => {
-              return <TaskItem task={task} key={task.id} />;
+              return (
+                <TaskItem
+                  handleDeleteTodo={handleDeleteTodo}
+                  task={task}
+                  key={task.id}
+                  handleDoneTodo={handleDoneTodo}
+                  startEditTodo={startEditTodo}
+                />
+              );
             })
           : 'Chưa có công việc nào hoàn thành!'}
       </ul>

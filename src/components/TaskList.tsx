@@ -10,6 +10,7 @@ interface TaskListProps {
 
 const TaskList = (props: TaskListProps) => {
   const { taskList, handleDoneTodo, handleDeleteTodo, startEditTodo } = props;
+
   const taskListNotDone = taskList.filter((task) => {
     return !task.done;
   });
@@ -21,7 +22,7 @@ const TaskList = (props: TaskListProps) => {
     <div>
       <h1 className="mb-3 text-2xl font-bold">Chưa hoàn thành</h1>
       <ul className="flex flex-col gap-2">
-        {taskListNotDone.length > 0
+        {taskListNotDone.length
           ? taskListNotDone.map((task) => {
               return (
                 <TaskItem
@@ -38,7 +39,7 @@ const TaskList = (props: TaskListProps) => {
 
       <h1 className="mb-3 mt-3 text-2xl font-bold">Đã hoàn thành</h1>
       <ul className="flex flex-col gap-2">
-        {taskListDone.length > 0
+        {taskListDone.length
           ? taskListDone.map((task) => {
               return (
                 <TaskItem

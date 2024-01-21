@@ -1,7 +1,9 @@
 import { Todo } from '../@types/todo.type';
+import connect, { InjectedType } from '../HOC/connect';
 import TaskItem from './TaskItem';
+import PropsTypes from 'prop-types';
 
-interface TaskListProps {
+interface TaskListProps extends InjectedType {
   taskList: Todo[];
   handleDoneTodo: (id: string, isDone: boolean) => void;
   handleDeleteTodo: (id: string) => void;
@@ -57,4 +59,11 @@ const TaskList = (props: TaskListProps) => {
   );
 };
 
-export default TaskList;
+TaskList.propTypes = {
+  taskList: PropsTypes.array.isRequired,
+  handleDoneTodo: PropsTypes.func.isRequired,
+  handleDeleteTodo: PropsTypes.func.isRequired,
+  startEditTodo: PropsTypes.func.isRequired
+};
+
+export default connect({ user: { name: 'Hoang Hoa' } })(TaskList);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Todo, TodoStorage } from '../@types/todo.type';
 import TaskInput from './TaskInput';
 import TaskList from './TaskList';
+import Title from './Title';
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -94,7 +95,7 @@ const TodoList = () => {
   return (
     <div className="flex justify-center">
       <div className="mt-5 w-[350px] rounded-lg bg-white p-3 shadow-lg">
-        <h1 className="text-2xl font-bold">To do list typescript</h1>
+        <Title />
         <TaskInput
           addTodo={addTodo}
           currentTodo={currentTodo}

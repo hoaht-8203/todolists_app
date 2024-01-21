@@ -3,6 +3,7 @@ import IconAM from './Icon/IconAM';
 import IconPM from './Icon/IconPM';
 import IconDelete from './Icon/IconDelete';
 import IconEdit from './Icon/IconEdit';
+import PropTypes from 'prop-types';
 
 interface TaskItemProps {
   task: Todo;
@@ -49,6 +50,13 @@ const TaskItem = (props: TaskItemProps) => {
       </button>
     </li>
   );
+};
+
+TaskItem.propTypes = {
+  task: PropTypes.object.isRequired,
+  handleDoneTodo: PropTypes.func.isRequired,
+  handleDeleteTodo: PropTypes.func.isRequired,
+  startEditTodo: PropTypes.func.isRequired
 };
 
 export default TaskItem;

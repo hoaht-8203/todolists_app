@@ -1,7 +1,12 @@
 import React from 'react';
 
-const Title = () => {
-  console.log('Title had re-render');
+interface TitleProps {
+  handleClickTitle: (value: any) => void;
+}
+
+const Title = (props: TitleProps) => {
+  console.log(props);
+
   return <h1 className="text-2xl font-bold">To do list typescript</h1>;
 };
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Todo } from '../@types/todo.type';
 import IconEnter from './Icon/IconEnter';
 import PropsTypes from 'prop-types';
 import connect, { ExtraInforType } from '../HOC/connect';
 import { debug, log } from '../constants';
+import Title from './Title';
 
 interface TaskInputProps extends ExtraInforType {
   addTodo: (name: string) => void;
@@ -37,8 +38,13 @@ const TaskInput = (props: TaskInputProps) => {
     }
   };
 
+  const handleClickTitle = useCallback((value: any) => {
+    console.log('Value:', value);
+  }, []);
+
   return (
     <form onSubmit={handleSubmitTask}>
+      <Title handleClickTitle={handleClickTitle} />
       <div className="mb-3 mt-3 flex justify-between gap-2">
         <input
           className="w-full rounded-lg border px-3 py-2 shadow focus:outline-none focus:ring-2 focus:ring-blue-400"

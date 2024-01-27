@@ -1,26 +1,63 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { Todo, TodoStorage } from '../@types/todo.type';
 import TaskInput from './TaskInput';
 import TaskList from './TaskList';
-import Title from './Title';
 
-const TodoList = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
+type TodoAction =
+  | { type: 'add_todo'; payload: Todo }
+  | { type: 'done_todo'; payload: { id: string; isDone: boolean } }
+  | { type: 'delete_todo'; payload: string }
+  | { type: 'update_todo'; payload: Todo };
 
-  useEffect(() => {
-    const todos = localStorage.getItem('todos');
-    if (todos) {
-      const todosLocalStorage: TodoStorage[] = JSON.parse(todos);
-      const todosList: Todo[] = todosLocalStorage.map((todo) => {
+const todo_reducer = (state: Todo[], action: TodoAction) => {
+  if (action.type === 'add_todo') {
+    return [...state, action.payload];
+  }
+  if (action.type === 'done_todo') {
+    return state.map((todo) => {
+      if (todo.id === action.payload.id) {
         return {
           ...todo,
-          date: new Date(todo.date)
+          done: action.payload.isDone
         };
-      });
-      setTodos(todosList);
-    }
-  }, []);
+      }
+      return todo;
+    });
+  }
+  if (action.type === 'delete_todo') {
+    return state.filter((todo) => {
+      return todo.id !== action.payload;
+    });
+  }
+  if (action.type === 'update_todo') {
+    return state.map((todo) => {
+      if (todo.id === action.payload.id) {
+        return action.payload;
+      }
+      return todo;
+    });
+  }
+  throw new Error(`Invalid Action ${action}`);
+};
+
+const initTodoList = (initTodoList: Todo[]) => {
+  const todos = localStorage.getItem('todos');
+  if (todos) {
+    const todosLocalStorage: TodoStorage[] = JSON.parse(todos);
+    const todosList: Todo[] = todosLocalStorage.map((todo) => {
+      return {
+        ...todo,
+        date: new Date(todo.date)
+      };
+    });
+    return todosList;
+  }
+  return [];
+};
+
+const TodoList = () => {
+  const [todos, dispatch] = useReducer(todo_reducer, [], initTodoList);
+  const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
@@ -33,31 +70,15 @@ const TodoList = () => {
       done: false,
       date: new Date()
     };
-    setTodos((prevTodos) => {
-      return [...prevTodos, todo];
-    });
+    dispatch({ type: 'add_todo', payload: todo });
   };
 
   const handleDoneTodo = (id: string, isDone: boolean) => {
-    setTodos((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            done: isDone
-          };
-        }
-        return todo;
-      });
-    });
+    dispatch({ type: 'done_todo', payload: { id: id, isDone: isDone } });
   };
 
   const handleDeleteTodo = (id: string) => {
-    setTodos((prevTodos) => {
-      return prevTodos.filter((todo) => {
-        return todo.id !== id;
-      });
-    });
+    dispatch({ type: 'delete_todo', payload: id });
   };
 
   const startEditTodo = (id: string) => {
@@ -82,14 +103,7 @@ const TodoList = () => {
   };
 
   const updateTodo = (newTodo: Todo) => {
-    setTodos((prevTodos) => {
-      return prevTodos.map((todo) => {
-        if (todo.id === newTodo.id) {
-          return newTodo;
-        }
-        return todo;
-      });
-    });
+    dispatch({ type: 'update_todo', payload: newTodo });
   };
 
   console.log('Todolist app re-render');

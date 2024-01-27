@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function WatchTimer() {
   const [second, setSencond] = useState<number>(0);
+  const interval = useRef<any>(null);
 
   useEffect(() => {
-    const watch = setInterval(() => {
+    interval.current = setInterval(() => {
       setSencond((prevSecond) => prevSecond + 1);
       console.log('SetInterval is running!');
     }, 1000);
 
     return () => {
-      clearInterval(watch);
+      clearInterval(interval.current);
     };
   }, []);
 

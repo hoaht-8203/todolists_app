@@ -40,7 +40,7 @@ const todo_reducer = (state: Todo[], action: TodoAction) => {
   throw new Error(`Invalid Action ${action}`);
 };
 
-const initTodoList = (initTodoList: Todo[]) => {
+const initTodoList = () => {
   const todos = localStorage.getItem('todos');
   if (todos) {
     const todosLocalStorage: TodoStorage[] = JSON.parse(todos);

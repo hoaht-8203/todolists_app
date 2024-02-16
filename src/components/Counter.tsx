@@ -4,6 +4,7 @@ import reducer, { init, initalState } from '../reducer/reducer';
 
 const Counter = () => {
   const [state, dispatch] = useReducer(reducer, initalState, init);
+  // write something in here with the keyboard
 
   const increaseAge = () => {
     dispatch(increaseAgeAction());

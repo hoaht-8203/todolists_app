@@ -8,12 +8,12 @@ import Welcome from './components/Welcome';
 function App() {
   return (
     <div>
-      {/* <TodoList /> */}
+      <TodoList />
       {/* <Watch /> */}
       {/* <Count /> */}
       {/* <Counter /> */}
       {/* <Welcome /> */}
-      <AutoInput />
+      {/* <AutoInput /> */}
     </div>
   );
 }

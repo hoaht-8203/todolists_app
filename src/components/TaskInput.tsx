@@ -6,6 +6,7 @@ import connect, { ExtraInforType } from '../HOC/connect';
 import { debug, log } from '../constants';
 import Title from './Title';
 
+// Interface of TaskInputProps
 interface TaskInputProps extends ExtraInforType {
   addTodo: (name: string) => void;
   currentTodo: Todo | null;
@@ -27,8 +28,7 @@ const TaskInput = (props: TaskInputProps) => {
     event.preventDefault();
 
     if (currentTodo) {
-      updateTodo(currentTodo);
-
+      updateTodo(currentTodo); //update the task
       editTodo('');
     }
 
